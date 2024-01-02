@@ -9,23 +9,35 @@ pub trait TranslationRepository {
         user: String,
     ) -> Result<TranslationItem, TranslationRepositoryError>;
 
-    // fn update_translation(
-    //     &mut self,
-    //     id: Uuid,
-    //     content_item: TranslationDto,
-    //     user: String,
-    // ) -> Result<TranslationItem, String>;
+    fn update_translation(
+        &mut self,
+        id: Uuid,
+        content_item: TranslationContent,
+        user: String,
+    ) -> Result<TranslationItem, TranslationRepositoryError>;
 
     fn get_translation_by_id(&self, id: &Uuid) -> Option<TranslationItem>;
 
-    // fn get_translation_by_content(&self, content_item: TranslationDto) -> Option<TranslationItem[]>;
+    fn get_translations_by_partial_content(
+        &self,
+        content_item: TranslationContent,
+    ) -> Option<Vec<TranslationItem>>;
 
-    // fn remove_translation(&self, id: Uuid) -> Result<TranslationItem, String>;
+    fn get_translation_by_exact_match(
+        &self,
+        content_item: TranslationContent,
+    ) -> Option<TranslationItem>;
+
+    fn remove_translation(
+        &mut self,
+        id: Uuid,
+    ) -> Result<TranslationItem, TranslationRepositoryError>;
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum TranslationRepositoryError {
     ContentAlreadyPresent,
+    ItemIdNotPresent,
 }
 
 // #[derive(Debug)]
